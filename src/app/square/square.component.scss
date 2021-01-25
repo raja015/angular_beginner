@@ -1,0 +1,24 @@
+.tile{
+  width: 80px;
+    height: 80px;
+
+}
+
+.resetTile{
+  margin: 5px;
+  width: 120px;
+  height: 60px;
+
+}
+
+
+.player{
+  position: relative;
+  width: 120px;
+  height: 60px;
+  border: 3px solid black;
+}
+.status{
+  width: 160px;
+  height: 30px;
+}

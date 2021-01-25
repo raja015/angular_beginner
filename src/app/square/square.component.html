@@ -1,0 +1,23 @@
+<div class="container">
+  Tic Tac Toe
+  <button class="status">{{status}}</button>
+
+    <div class="row" *ngFor="let rowData of tileData; index as i" >
+      <!-- for loop done-->
+     <button *ngFor="let data of rowData; index as j" class="tile" (click)="tileClick(i,j)"   [disabled]="checked" >{{tileData[i][j]}}</button>
+    </div>
+
+    <!-- <div class="row">
+      <button *ngFor="let item of tileData; index as i" class="tile" (click)="tileClick(1,i)" [disabled]="checked" >{{tileData[1][i]}}</button>
+    </div>
+    <div class="row">
+      <button  *ngFor="let item of tileData; index as i" class="tile" (click)="tileClick(2,i)" [disabled]="checked" >{{tileData[2][i]}}</button>
+    </div> -->
+
+
+    <div class="sat">
+      <button class="resetTile"(click)="reset()">next game</button>
+      <button class="player">{{player}}</button>
+    </div>
+    <!-- todo -->
+</div>

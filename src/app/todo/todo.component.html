@@ -1,0 +1,17 @@
+<div class="main container" >
+
+
+
+  <input #listData type="text" id="Tasks" minlength="2" >
+
+  <button (click)="add(listData)" >Add</button>
+
+  <div class="showListData" *ngFor="let item of TaskList ; index as i">
+      {{item.value}}
+
+      <button>
+      clear
+      </button>
+  </div>
+
+</div>

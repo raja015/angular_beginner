@@ -2,16 +2,45 @@
 
 
 
-  <input #listData type="text" id="Tasks" minlength="2" >
+   <!-- <input [(ngModel)]="task"  type="text" id="task" minlength="2" >
+   <br>
+  <input [(ngModel)]="taskDiscription" type="text" >
 
-  <button (click)="add(listData)" >Add</button>
+  <button (click)="add()" >Add</button>
 
   <div class="showListData" *ngFor="let item of TaskList ; index as i">
-      {{item.value}}
+      {{item.title}}
+      {{item.discription}}
 
-      <button>
-      clear
-      </button>
+      <button >update</button>
+
+      <button (click)="clear(i)" >clear</button>
+  </div> -->
+  <div class="showListData" *ngFor="let item of TaskList ; index as i">
+    {{item.title}}
+    {{item.discription}}
+
+    <button (click)="edit(i)" [disabled]="displayForm" >edit</button>
+
+    <button (click)="clear(i)" [disabled]="displayForm" >clear</button>
   </div>
+  <button class="open-button" (click)="openForm()"  >Add Task</button>
+<div #myform class="form-popup" id="myForm" *ngIf="displayForm" >
+  <form action="/action_page.php" class="form-container" >
+    <h1>Todo</h1>
+
+    <label for="task"><b>task</b></label>
+    <input  [(ngModel)]="task" (keyup)="formValidatiom()" type="text" placeholder="Enter task" name="task"   >
+
+    <label for="discription"><b>details</b></label>
+    <input [(ngModel)]="taskDiscription" type="text" placeholder="Enter details" name="discription" required >
+
+    <button (click)="update()" *ngIf="displayUpdate"  class="update" >update</button>
+    <button  (click)="add()"  [disabled]="invalidForm" *ngIf="displaySave"   class="btn" >save</button>
+    <button type="button" class="btn cancel" (click)="closeForm()">Close</button>
+
+  </form>
+
+
 
 </div>

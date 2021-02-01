@@ -1,0 +1,49 @@
+<div class="mainCointainer">
+    <label for="transactionList"> <h2><b>*transaction List   </b></h2> </label>
+    <div class="transactionList" *ngFor="let item of transactionList; index as i">
+      {{item.title}}
+      {{item.titleamount}}
+      <button (click)="edit(i)">edit</button>
+      <button (click)="clear(i)">clear</button>
+    </div>
+
+    <label for="userList"><h2><b>*User Details</b></h2></label>
+    <div class="userList" *ngFor="let item of userList ; index as i" >
+      {{item}}
+      {{summaryList[i].paid}}
+      {{summaryList[i].owes}}
+      {{summaryList[i].toGetBack}}
+    </div>
+  <button class="open-button" (click)="openForm()"  >Add transaction equally</button>
+  <button class="open-button-Unequal" (click)="openFormUnequal()"  >Add transaction Unequally</button>
+
+  <div #myform class="form-popup" id="myForm" *ngIf="displayForm" >
+    <form action="/action_page.php" class="form-container" >
+      <h1> add expense</h1>
+
+      <input  [(ngModel)]="discription"  type="text" placeholder="Enter discription" name="discription"   >
+      <input [(ngModel)]="amount"   type="number" placeholder="Enter amount" name="amount"  >
+      <input  [(ngModel)]="payer"  type="text" placeholder="payer" name="payer"   >
+      <input  [(ngModel)]="lenter" (keyup)="formValidation()" type="text" placeholder="paying to" name="lenter"   >
+      <button  (click)="add()"  [disabled]="invalidForm" *ngIf="displaySave"   class="btn" >save</button>
+      <button (click)="update()" class="update"*ngIf="displayUpdate" >Update</button>
+      <button type="button" class="btn cancel" (click)="closeForm()">Close</button>
+    </form>
+  </div>
+  <div #myform class="form-popup" id="myForm" *ngIf="displayUnequalForm" >
+    <form action="/action_page.php" class="form-container" >
+      <h1> add expense</h1>
+
+      <input  [(ngModel)]="discription"  type="text" placeholder="Enter discription" name="discription"   >
+      <input [(ngModel)]="amount"   type="number" placeholder="Enter amount" name="amount"  >
+      <input  [(ngModel)]="payer"  type="text" placeholder="payer" name="payer"   >
+      <input  [(ngModel)]="lenter" (keyup)="formValidation()" type="text" placeholder="paying to" name="lenter"   >
+      <button  (click)="add()"  [disabled]="invalidForm" *ngIf="displaySave"   class="btn" >save</button>
+      <button (click)="update()" class="update"*ngIf="displayUpdate" >Update</button>
+      <button type="button" class="btn cancel" (click)="closeForm()">Close</button>
+    </form>
+  </div>
+
+
+
+</div>

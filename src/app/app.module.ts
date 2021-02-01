@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SquareComponent } from './square/square.component';
 import { TodoComponent } from './todo/todo.component';
+import { SplitWiseComponent } from './split-wise/split-wise.component';
 // import {MatSliderModule} from '@angular/material/slider';
 @NgModule({
   declarations: [
     AppComponent,
     SquareComponent,
-    TodoComponent
+    TodoComponent,
+    SplitWiseComponent
   ],
   imports: [
     BrowserModule,

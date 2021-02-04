@@ -11,7 +11,7 @@ export class SplitWiseComponent implements OnInit {
 
   transactionList:any[]=[];
   userList:string[]=[];
-  useramount:number[]=[];
+
 
   displayForm:boolean=false;
   displayUnequalForm=false;
@@ -25,6 +25,10 @@ export class SplitWiseComponent implements OnInit {
   payer:string;
   lenter:string;
 
+  numberOfLenterUnequally:number=0;
+  lentersUnequally: any[]=[];
+  lenterAmountUnequally:number=0;
+
   summaryList:any[]=[];
   currentIndex:number;
 
@@ -33,8 +37,74 @@ export class SplitWiseComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
   }
-  emptySummaryList(){
+
+  addUnequal(){
+    this.addUserifNotExist(this.payer);
+
+    if(this.lenter!=""){
+      this.addUserifNotExist(this.lenter);
+    }
+    this.transactionList.push({
+      title:this.discription,
+      titleamount:this.amount,
+      payerVar:this.payer,
+      lenterVar:this.lentersUnequally
+   });
+   console.log(this.lentersUnequally);
+   this.discription="";
+   this.amount=0;
+   this.lenter="";
+   this.payer="";
+   this.lentersUnequally=null;
+   console.log(this.transactionList);
+
+  this.updateSummaryListUnequally();
+  console.log(this.summaryList);
+  }
+
+
+  clearLenterUnequally(index:number){
+    this.lentersUnequally.splice(index,1);
+  }
+
+  addLenterUnequally(){
+    var i:number;
+    if(this.lenter==null || this.lenter==""){
+      alert("Lenter cannot be empty");
+      return 0;
+    }
+    if(this.lentersUnequally.length>0){
+      var sumLenterAmount=this.lenterAmountUnequally;
+      for(i=0;i<this.lentersUnequally.length;i++){
+        if(this.lenter== this.userList[this.lentersUnequally[i].lenterindex] ){
+          alert("cannot add double");
+          return ;
+         }
+
+        sumLenterAmount+=this.lentersUnequally[i].lenterAmount;
+
+         if(this.amount<sumLenterAmount){
+           alert("amount should be grater or equal to total lenter amount");
+
+           this.lenterAmountUnequally=0;
+           return ;
+         }
+       }
+      }
+    this.addUserifNotExist(this.lenter);
+    var index= this.userindex(this.lenter);
+    this.lentersUnequally.push({
+      lenterIndex:index,
+      lenterAmount:this.lenterAmountUnequally
+    });
+    this.lenter="";
+    this.lenterAmountUnequally=0;
+
+
+  }
+  resetSummaryList(){
     var i:number;
     for(i=0;i<this.summaryList.length;i++){
       this.summaryList[i].paid=0;
@@ -42,25 +112,54 @@ export class SplitWiseComponent implements OnInit {
       this.summaryList[i].toGetBack=0;
     }
   }
-  updateSummaryList(){
+  updateSummaryListUnequally(){
     var i:number;
-    this.emptySummaryList();
+    this.resetSummaryList();
+
     for(i=0;i<this.transactionList.length;i++){
       var payerIndex= this.userindex(this.transactionList[i].payerVar);
       this.summaryList[payerIndex].paid+=this.transactionList[i].titleamount;
-      var lenterIndividual: string[]=this.transactionList[i].lenterVar.split(',');
+      // var lenterIndividuals: string[]=this.transactionList[i].lenterVar.split(',');
+      var sum:number=0;
+      var countNotZeroLenter=0;
       var j:number;
-      this.summaryList[payerIndex].toGetBack+=this.transactionList[i].titleamount-(this.transactionList[i].titleamount)/(lenterIndividual.length+1);
-      for(j=0;j<lenterIndividual.length;j++){
-        var lenterindex=this.userindex(lenterIndividual[j]);
-        this.summaryList[lenterindex].owes+=(this.transactionList[i].titleamount)/(lenterIndividual.length+1);
+      for(j=0;j<this.transactionList[i].lenterVar.length;j++){
+        sum+=this.transactionList[i].lenterVar[j].lenterAmount;
+        if(this.transactionList[i].lenterVar[j].lenterAmount!=0){
+          countNotZeroLenter++;
+        }
       }
+      var newSum=this.transactionList[i].titleamount - sum;
+
+      this.summaryList[payerIndex].toGetBack+=newSum-(newSum)/(countNotZeroLenter+1);
+      for(j=0;j<this.transactionList[i].lenterVar.length;j++){
+        if(this.transactionList[i].lenterVar[j].lenterAmount==0){
+        this.summaryList[this.transactionList[i].lenterVar[j].lenterIndex].owes+=(newSum)/(countNotZeroLenter+1);
+        }
+        else{
+          this.summaryList[this.transactionList[i].lenterVar[j].lenterIndex].owes+=this.transactionList[i].lenterVar[j].lenterAmount;
+        }
+    }
+  }
+}
 
 
+  updateSummaryList(){
+    var i:number;
+    this.resetSummaryList();
+    for(i=0;i<this.transactionList.length;i++){
+      var payerIndex= this.userindex(this.transactionList[i].payerVar);
+      this.summaryList[payerIndex].paid+=this.transactionList[i].titleamount;
+      var lenterIndividuals: string[]=this.transactionList[i].lenterVar.split(',');
+      var j:number;
+      this.summaryList[payerIndex].toGetBack+=this.transactionList[i].titleamount-(this.transactionList[i].titleamount)/(lenterIndividuals.length+1);
+      for(j=0;j<lenterIndividuals.length;j++){
+        var lenterindex=this.userindex(lenterIndividuals[j]);
+        this.summaryList[lenterindex].owes+=(this.transactionList[i].titleamount)/(lenterIndividuals.length+1);
+      }
       //  var lenterindex=
     }
-    console.log(this.transactionList),
-      console.log(this.summaryList);
+
   }
 
   addUserifNotExist(variable:string){
@@ -73,7 +172,7 @@ export class SplitWiseComponent implements OnInit {
         toGetBack:Var
       });
       // console.log(this.summaryList);
-    this.useramount.push(0);
+
     }
   }
 
@@ -112,28 +211,16 @@ export class SplitWiseComponent implements OnInit {
   //   var amt=this.amount;
   //   this.useramount[index]= adding-amt/2;
   // }
-  addAmountLenter(index:number,person:number){
 
-    var adding:number= this.useramount[index];
-    var amt=this.amount;
 
-   this.useramount[index]= adding+amt/(person+1);
 
-  }
-
-  findIndex(lenterName:string):number{
-    var i:number;
-    for(i=0;i<this.userList.length;i++){
-      if(this.userList[i]==lenterName)
-      return i;
-    }
-  }
   clearForm(){
     this.discription="";
       this.amount=null;
       this.payer="";
       this.lenter="";
   }
+
   add(){
       this.transactionList.push({
          title:this.discription,
@@ -143,8 +230,16 @@ export class SplitWiseComponent implements OnInit {
       });
       this.invalidForm=true;
 
-      this.addUserifNotExist(this.payer);
-      var payerindex=this.userindex(this.payer);
+      this.onTransactionListModification();
+
+      this.updateSummaryList();
+      this.clearForm();
+
+
+  }
+  onTransactionListModification(){
+    this.addUserifNotExist(this.payer);
+
       // console.log(payerindex);
       // this.addAmountPayer(payerindex);
       var i:number;
@@ -152,12 +247,10 @@ export class SplitWiseComponent implements OnInit {
       // console.log(lenterIndividual);
       for(i=0;i<lenterIndividual.length;i++){
         this.addUserifNotExist(lenterIndividual[i]);
-        var lenterindex=this.userindex(lenterIndividual[i]);
+        // var lenterindex=this.userindex(lenterIndividual[i]);
 
       // this.addAmountLenter(lenterindex,this.lenterIndividual.length);
       }
-      this.updateSummaryList();
-      this.clearForm();
   }
 
 
@@ -184,26 +277,26 @@ export class SplitWiseComponent implements OnInit {
       this.currentIndex=index;
       this.displayUpdate=true;
       this.displaySave=false;
-      this.oldLenterIndex=this.findIndex(this.lenter);
-      console
+      this.oldLenterIndex=this.userindex(this.lenter);
+
   }
 
   update(){
-
-
     this.transactionList[this.currentIndex].title=this.discription;
     this.transactionList[this.currentIndex].titleamount=this.amount;
     this.transactionList[this.currentIndex].payerVar=this.payer;
     this.transactionList[this.currentIndex].lenterVar=this.lenter;
 
-    this.userList[this.currentIndex]=this.payer; //updating userlist
-    this.userList[this.oldLenterIndex]=this.lenter;
+    // this.userList[this.currentIndex]=this.payer; //updating userlist
+    // this.userList[this.oldLenterIndex]=this.lenter;
+    this.onTransactionListModification()
     this.displayUpdate=false;
     this.displaySave=true;
     console.log(this.transactionList);
     this.updateSummaryList();
     this.clearForm();
-
+    // this.currentIndex=-1;
+    // this.oldLenterIndex=-1;
   }
 
 

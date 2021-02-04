@@ -36,9 +36,18 @@
 
       <input  [(ngModel)]="discription"  type="text" placeholder="Enter discription" name="discription"   >
       <input [(ngModel)]="amount"   type="number" placeholder="Enter amount" name="amount"  >
+
       <input  [(ngModel)]="payer"  type="text" placeholder="payer" name="payer"   >
-      <input  [(ngModel)]="lenter" (keyup)="formValidation()" type="text" placeholder="paying to" name="lenter"   >
-      <button  (click)="add()"  [disabled]="invalidForm" *ngIf="displaySave"   class="btn" >save</button>
+
+      <!-- <input [(ngModel)]="numberOfLenterUnequally"   type="number" placeholder="Enter no. of lenter" name="numberOfLenter"  > -->
+      <input  [(ngModel)]="lenter" class="lenterUnequally" type="text" placeholder="paying to" name="lenter" >
+      <input [(ngModel)]="lenterAmountUnequally"   type="number" placeholder="Enter amount" name="lenterAmountUnequally"  >
+      <button (click)="addLenterUnequally()"  > add Lenter</button>
+        <p *ngFor="let item of lentersUnequally ; index as i"> {{this.userList[item.lenterIndex]}}
+          {{item.lenterAmount}}
+          <button (click)="clearLenterUnequally(i)">clear</button>
+        </p>
+      <button  (click)="addUnequal()"     class="btn" >save</button>
       <button (click)="update()" class="update"*ngIf="displayUpdate" >Update</button>
       <button type="button" class="btn cancel" (click)="closeForm()">Close</button>
     </form>

@@ -3,7 +3,7 @@
     <div class="transactionList" *ngFor="let item of transactionList; index as i">
       {{item.title}}
       {{item.titleamount}}
-      <button (click)="edit(i)">edit</button>
+      <button (click)="editUnequally(i)">edit</button>
       <button (click)="clear(i)">clear</button>
     </div>
 
@@ -43,12 +43,13 @@
       <input  [(ngModel)]="lenter" class="lenterUnequally" type="text" placeholder="paying to" name="lenter" >
       <input [(ngModel)]="lenterAmountUnequally"   type="number" placeholder="Enter amount" name="lenterAmountUnequally"  >
       <button (click)="addLenterUnequally()"  > add Lenter</button>
-        <p *ngFor="let item of lentersUnequally ; index as i"> {{this.userList[item.lenterIndex]}}
+        <p *ngFor="let item of lentersUnequally ; index as i">
+          {{item.lenterIndex}}
           {{item.lenterAmount}}
-          <button (click)="clearLenterUnequally(i)">clear</button>
+          <button (click)="removeLenterUnequally(i)">clear</button>
         </p>
-      <button  (click)="addUnequal()"     class="btn" >save</button>
-      <button (click)="update()" class="update"*ngIf="displayUpdate" >Update</button>
+      <button  (click)="addUnequalTransaction()"     class="btn" >save</button>
+      <button (click)="updateUnequally()" class="update"*ngIf="displayUpdate" >Update</button>
       <button type="button" class="btn cancel" (click)="closeForm()">Close</button>
     </form>
   </div>

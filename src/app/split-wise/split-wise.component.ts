@@ -25,7 +25,7 @@ export class SplitWiseComponent implements OnInit {
   payer:string;
   lenter:string;
 
-  numberOfLenterUnequally:number=0;
+
   lentersUnequally: any[]=[];
   lenterAmountUnequally:number=0;
 
@@ -40,12 +40,41 @@ export class SplitWiseComponent implements OnInit {
 
   }
 
-  addUnequal(){
+  updateUnequally(){
+    if(this.lentersUnequally==null){
+      alert("add Lenter First");
+      return;
+    }
+    console.log(this.lentersUnequally);
     this.addUserifNotExist(this.payer);
+    var i:number;
+    for(i=0;i<this.lentersUnequally.length;i++){
+      this.addUserifNotExist(this.lentersUnequally[i].lenterIndex);
+      this.lentersUnequally[i].lenterIndex=this.userindex(this.lentersUnequally[i].lenterIndex);
+    }
+    this.transactionList[this.currentIndex].title=this.discription;
+    this.transactionList[this.currentIndex].titleamount=this.amount;
+    this.transactionList[this.currentIndex].payerVar=this.payer;
+    this.transactionList[this.currentIndex].lenterVar=this.lentersUnequally;
+    this.updateSummaryListUnequally();
+    this.clearForm();
+  }
+
+  addUnequalTransaction(){
+
 
     if(this.lenter!=""){
-      this.addUserifNotExist(this.lenter);
+      alert("add Lenter First");
+      return;
     }
+    console.log(this.lentersUnequally);
+    this.addUserifNotExist(this.payer);
+    var i:number;
+    for(i=0;i<this.lentersUnequally.length;i++){
+      this.addUserifNotExist(this.lentersUnequally[i].lenterIndex);
+      this.lentersUnequally[i].lenterIndex=this.userindex(this.lentersUnequally[i].lenterIndex);
+    }
+
     this.transactionList.push({
       title:this.discription,
       titleamount:this.amount,
@@ -57,7 +86,7 @@ export class SplitWiseComponent implements OnInit {
    this.amount=0;
    this.lenter="";
    this.payer="";
-   this.lentersUnequally=null;
+   this.lentersUnequally=[];
    console.log(this.transactionList);
 
   this.updateSummaryListUnequally();
@@ -65,7 +94,7 @@ export class SplitWiseComponent implements OnInit {
   }
 
 
-  clearLenterUnequally(index:number){
+  removeLenterUnequally(index:number){
     this.lentersUnequally.splice(index,1);
   }
 
@@ -78,7 +107,7 @@ export class SplitWiseComponent implements OnInit {
     if(this.lentersUnequally.length>0){
       var sumLenterAmount=this.lenterAmountUnequally;
       for(i=0;i<this.lentersUnequally.length;i++){
-        if(this.lenter== this.userList[this.lentersUnequally[i].lenterindex] ){
+        if(this.lenter== this.userList[this.lentersUnequally[i].lenterIndex] ){
           alert("cannot add double");
           return ;
          }
@@ -93,10 +122,10 @@ export class SplitWiseComponent implements OnInit {
          }
        }
       }
-    this.addUserifNotExist(this.lenter);
-    var index= this.userindex(this.lenter);
+    // this.addUserifNotExist(this.lenter);
+    // var index= this.userindex(this.lenter);
     this.lentersUnequally.push({
-      lenterIndex:index,
+      lenterIndex:this.lenter,
       lenterAmount:this.lenterAmountUnequally
     });
     this.lenter="";
@@ -112,6 +141,7 @@ export class SplitWiseComponent implements OnInit {
       this.summaryList[i].toGetBack=0;
     }
   }
+
   updateSummaryListUnequally(){
     var i:number;
     this.resetSummaryList();
@@ -131,7 +161,7 @@ export class SplitWiseComponent implements OnInit {
       }
       var newSum=this.transactionList[i].titleamount - sum;
 
-      this.summaryList[payerIndex].toGetBack+=newSum-(newSum)/(countNotZeroLenter+1);
+      this.summaryList[payerIndex].toGetBack+=sum;
       for(j=0;j<this.transactionList[i].lenterVar.length;j++){
         if(this.transactionList[i].lenterVar[j].lenterAmount==0){
         this.summaryList[this.transactionList[i].lenterVar[j].lenterIndex].owes+=(newSum)/(countNotZeroLenter+1);
@@ -219,6 +249,7 @@ export class SplitWiseComponent implements OnInit {
       this.amount=null;
       this.payer="";
       this.lenter="";
+      this.lentersUnequally=[];
   }
 
   add(){
@@ -269,6 +300,24 @@ export class SplitWiseComponent implements OnInit {
     this.updateSummaryList();
   }
 
+  editUnequally(index:number){
+    var NameList = [];
+    this.discription=this.transactionList[index].title,
+    this.amount=this.transactionList[index].titleamount,
+    this.payer=this.transactionList[index].payerVar,
+    this.currentIndex=index;
+    for(var i=0;i<this.transactionList[index].lenterVar.length;i++){
+      NameList.push({lenterIndex:this.userList[this.transactionList[index].lenterVar[i].lenterIndex],
+        lenterAmount: this.transactionList[index].lenterVar[i].lenterAmount
+      });
+
+    }
+    this.lentersUnequally=NameList;
+
+    this.displayUpdate=true;
+      this.displaySave=false;
+  }
+
   edit(index:number){
     this.discription=this.transactionList[index].title,
       this.amount=this.transactionList[index].titleamount,
@@ -289,7 +338,7 @@ export class SplitWiseComponent implements OnInit {
 
     // this.userList[this.currentIndex]=this.payer; //updating userlist
     // this.userList[this.oldLenterIndex]=this.lenter;
-    this.onTransactionListModification()
+    this.onTransactionListModification();
     this.displayUpdate=false;
     this.displaySave=true;
     console.log(this.transactionList);

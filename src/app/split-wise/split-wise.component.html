@@ -14,6 +14,19 @@
       {{summaryList[i].owes}}
       {{summaryList[i].toGetBack}}
     </div>
+    <label for="groupList">  <h2> <b> *Group Details </b> </h2> </label>
+    <div class="groupList" *ngFor="let item of groupList; index as i" >
+        <b>{{item}}</b>
+        <button (click)="groupDetails(item)"> Show List</button>
+
+        <div  *ngFor="let groupName of individualGroupNameList; index as i" >
+          <p >
+            {{individualGroupNameList[i].title}}
+            {{individualGroupNameList[i].titleamount}}
+          </p>
+        </div>
+    </div>
+
   <button class="open-button" (click)="openForm()"  >Add transaction equally</button>
   <button class="open-button-Unequal" (click)="openFormUnequal()"  >Add transaction Unequally</button>
 
@@ -33,8 +46,8 @@
   <div #myform class="form-popup" id="myForm" *ngIf="displayUnequalForm" >
     <form action="/action_page.php" class="form-container" >
       <h1> add expense</h1>
-
-      <input  [(ngModel)]="discription"  type="text" placeholder="Enter discription" name="discription"   >
+      <input [(ngModel)]="groupName" type="text"  placeholder="Enter Group Name" name="groupName">
+      <input   [(ngModel)]="discription" type="text" placeholder="Enter discription" name="discription"   >
       <input [(ngModel)]="amount"   type="number" placeholder="Enter amount" name="amount"  >
 
       <input  [(ngModel)]="payer"  type="text" placeholder="payer" name="payer"   >
@@ -48,8 +61,8 @@
           {{item.lenterAmount}}
           <button (click)="removeLenterUnequally(i)">clear</button>
         </p>
-      <button  (click)="addUnequalTransaction()"     class="btn" >save</button>
-      <button (click)="updateUnequally()" class="update"*ngIf="displayUpdate" >Update</button>
+      <button  (click)="addUnequalTransaction()"  *ngIf="displaySave"   class="btn" >save</button>
+      <button (click)="updateUnequally()" class="update" *ngIf="displayUpdate" >Update</button>
       <button type="button" class="btn cancel" (click)="closeForm()">Close</button>
     </form>
   </div>

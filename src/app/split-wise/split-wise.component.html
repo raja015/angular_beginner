@@ -1,4 +1,5 @@
-<div class="mainCointainer">
+<div class="row">
+  <div class="coloumn left">
     <label for="transactionList"> <h2><b>*transaction List   </b></h2> </label>
     <div class="transactionList" *ngFor="let item of transactionList; index as i">
       {{item.title}}
@@ -16,17 +17,25 @@
     </div>
     <label for="groupList">  <h2> <b> *Group Details </b> </h2> </label>
     <div class="groupList" *ngFor="let item of groupList; index as i" >
-        <b>{{item}}</b>
-        <button (click)="groupDetails(item)"> Show List</button>
 
+        <button (click) ="addGroupTransaction(i)"><b>{{item}}</b></button>
+
+        <button (click)="groupDetails(i)"> Show List</button>
+      </div>
+    </div>
+  <div class="coloumn middle">
         <div  *ngFor="let groupName of individualGroupNameList; index as i" >
-          <p >
+          <p>
             {{individualGroupNameList[i].title}}
             {{individualGroupNameList[i].titleamount}}
+            <button (click)="editUnequally(i)">edit</button>
+            <button (click)="clear(i)">clear</button>
           </p>
         </div>
-    </div>
+  </div>
 
+
+    <div class="coloumn right">
   <button class="open-button" (click)="openForm()"  >Add transaction equally</button>
   <button class="open-button-Unequal" (click)="openFormUnequal()"  >Add transaction Unequally</button>
 
@@ -68,5 +77,5 @@
   </div>
 
 
-
+  </div>
 </div>

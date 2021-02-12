@@ -1,5 +1,6 @@
 import { style } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
+import { Todo } from 'shared/todo.model';
 
 @Component({
   selector: 'app-todo',
@@ -7,6 +8,9 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./todo.component.scss']
 })
 export class TodoComponent implements OnInit {
+  todo:Todo;
+
+
   TaskList:any[]=[];
   displayForm:boolean=false;
   displayUpdate:boolean=false;
@@ -24,7 +28,7 @@ export class TodoComponent implements OnInit {
       title:this.task,
       discription:this.taskDiscription
     });
-
+    console.log(this.todo.title);
     this.task="";
     this.taskDiscription="";
 
@@ -82,7 +86,7 @@ export class TodoComponent implements OnInit {
 
   constructor() { }
   ngOnInit(): void {
-
+    this.todo= new Todo();
   }
 
 

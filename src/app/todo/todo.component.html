@@ -1,25 +1,5 @@
 <div class="main container" >
-
-
-  <h1>
-    Todo List
-  </h1>
-
-
-   <!-- <input [(ngModel)]="task"  type="text" id="task" minlength="2" >
-   <br>
-  <input [(ngModel)]="taskDiscription" type="text" >
-
-  <button (click)="add()" >Add</button>
-
-  <div class="showListData" *ngFor="let item of TaskList ; index as i">
-      {{item.title}}
-      {{item.discription}}
-
-      <button >update</button>
-
-      <button (click)="clear(i)" >clear</button>
-  </div> -->
+ <h1>Todo List</h1>
   <div class="showListData" *ngFor="let item of TaskList ; index as i">
     {{item.title}}
     {{item.discription}}
@@ -34,7 +14,7 @@
     <h1>Todo</h1>
 
     <label for="task"><b>task</b></label>
-    <input  [(ngModel)]="task" (keyup)="formValidatiom()" type="text" placeholder="Enter task" name="task"   >
+    <input  [(ngModel)]="todo.title" (keyup)="formValidatiom()" type="text" placeholder="Enter task" name="task"   >
 
     <label for="discription"><b>details</b></label>
     <input [(ngModel)]="taskDiscription" type="text" placeholder="Enter details" name="discription" required >
